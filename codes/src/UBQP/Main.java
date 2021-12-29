@@ -1,10 +1,14 @@
+package UBQP;
+
+import DataStructures.Matrix;
+
+import java.io.File;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner;
-    private static int[][] mat;
-    private static int matSize;
+    private static Matrix matrix;
     private static int[] vecSolution;
     private static int solution;
     private  static int MAX_depl = 8;
@@ -12,18 +16,9 @@ public class Main {
     private static Random rand = new Random();
 
     public static void main(String[] argv) {
-        scanner = new Scanner(System.in);
-        matSize = scanner.nextInt();
-
-        mat = new int[matSize][matSize];
-
-        //On remplit:
-        for(int i = 0; i < matSize; i++) {
-            for(int j = 0; j < matSize; j++)
-                mat[i][j] = scanner.nextInt();
-        }
-
-        printMat();
+        matrix = new Matrix(new File("../res/matrixQ.txt"));
+        //matrix.initFromCLI();
+        matrix.print();
 
         //vecSolution = ex11_randomSolution();
         vecSolution = new int[] {1, 1, 0, 1, 0, 0};
@@ -43,8 +38,8 @@ public class Main {
     }
 
     public static int[] ex11_randomSolution(){
-        vecSolution = new int[matSize];
-        for(int i = 0; i < matSize; i++){
+        vecSolution = new int[matrix.size()];
+        for(int i = 0; i < matrix.size(); i++){
             vecSolution[i] = Math.abs(rand.nextInt() % 2);
         }
 
@@ -54,9 +49,9 @@ public class Main {
     public static int ex12_f(int[] X){
         solution = 0;
 
-        for(int i = 0; i < matSize; i++){
-            for(int j = 0; j < matSize; j++){
-                solution += mat[i][j]*X[i]*X[j];
+        for(int i = 0; i < matrix.size(); i++){
+            for(int j = 0; j < matrix.size(); j++){
+                solution += matrix.getMatrix()[i][j]*X[i]*X[j];
             }
         }
 
@@ -64,12 +59,12 @@ public class Main {
     }
 
     public static int[] ex13_bestNeigh(int[] X){
-        int[] res = new int[matSize];
+        int[] res = new int[matrix.size()];
         int min = 0, tmp, bestIdx = 0;
 
-        System.arraycopy(X, 0, res, 0, matSize);
+        System.arraycopy(X, 0, res, 0, matrix.size());
 
-        for(int i = 0; i < matSize; i++){
+        for(int i = 0; i < matrix.size(); i++){
             res[i] = (res[i] + 1) % 2;
             tmp = ex12_f(res);
 
@@ -123,7 +118,7 @@ public class Main {
 
     public static void print_solution(int[] vecSolution){
         System.out.print("[");
-        for(int i = 0; i < matSize; i++){
+        for(int i = 0; i < matrix.size(); i++){
             System.out.print(vecSolution[i] + " ");
         }
         System.out.print("]");
@@ -131,17 +126,5 @@ public class Main {
 
     public static Scanner getScanner(){
         return scanner;
-    }
-
-    public static void printMat() {
-        System.out.print("[");
-        for(int i = 0; i < matSize; i++) {
-            for(int j = 0; j < matSize;  j++)
-                System.out.print(mat[i][j] + " ");
-
-            if(i < matSize -1)
-                System.out.println();
-        }
-        System.out.print("]");
     }
 }
