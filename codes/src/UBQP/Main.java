@@ -6,9 +6,7 @@ import java.io.File;
 import java.util.Random;
 
 public class Main {
-    private static Matrix matrix;
-    private static VecSol vecSolution;
-    private static int solution;
+    private static UBQP ubqp;
     private static final Random rand = new Random();
 
     private static final int MAX_DEPL = 8;
@@ -16,57 +14,35 @@ public class Main {
 
 
     public static void main(String[] argv) {
-        matrix = new Matrix(new File("../res/matrixQ.txt"));
-        //matrix.initFromCLI();
+        Matrix matrix = new Matrix(new File("../res/matrixQ.txt"));
+        //Matrix matrix = matrix.initFromCLI();
         matrix.print();
 
-        //vecSolution = ex11_randomSolution();
-        vecSolution = new VecSol(new int[]{1, 1, 0, 1, 0, 0});
-        System.out.println("\n");
-        vecSolution.print();
+        System.out.println("\n ##### TESTING UBQP CLASS ##### ");
+        ubqp = new UBQP(matrix);
+        ubqp.setVecsol(new int[]{1, 1, 0, 1, 0, 0});
+        ubqp.getVecsol().print();
+        ubqp.printSolution();
 
-        solution = ex12_f(vecSolution.getVector());
-        System.out.println("f(X) = " + solution + "\n");
+        System.out.println("\n ##### TESTING STEEPEST HILL ALGORITHM ##### ");
+        ubqp.setVecsol(ex14_steepestHill(ubqp.getVecsol().getVector()));
+        ubqp.printSolution();
 
-        vecSolution.setVector(ex14_steepestHill(vecSolution.getVector()));
-        vecSolution.print();
-        System.out.println("f(X) = " + ex12_f(vecSolution.getVector()) + "\n");
-
+        System.out.println("\n ##### TESTING STEEPEST HILL WITH RESTARTS ##### ");
         ex15_steepestHillWithRestarts();
-        vecSolution.print();
-        System.out.println("f(X) = " + ex12_f(vecSolution.getVector()) + "\n");
-    }
-
-    public static int[] ex11_randomSolution(){
-        vecSolution.setVector(new int[matrix.size()]);
-        for(int i = 0; i < matrix.size(); i++){
-            vecSolution.getVector()[i] = Math.abs(rand.nextInt() % 2);
-        }
-
-        return vecSolution.getVector();
-    }
-
-    public static int ex12_f(int[] X){
-        solution = 0;
-
-        for(int i = 0; i < matrix.size(); i++){
-            for(int j = 0; j < matrix.size(); j++){
-                solution += matrix.getMatrix()[i][j]*X[i]*X[j];
-            }
-        }
-
-        return solution;
+        ubqp.getVecsol().print();
+        ubqp.printSolution();
     }
 
     public static int[] ex13_bestNeigh(int[] X){
-        int[] res = new int[matrix.size()];
+        int[] res = new int[ubqp.size()];
         int min = 0, tmp, bestIdx = 0;
 
-        System.arraycopy(X, 0, res, 0, matrix.size());
+        System.arraycopy(X, 0, res, 0, ubqp.size());
 
-        for(int i = 0; i < matrix.size(); i++){
+        for(int i = 0; i < ubqp.size(); i++){
             res[i] = (res[i] + 1) % 2;
-            tmp = ex12_f(res);
+            tmp = UBQP.f(ubqp.getMatrix(), res);
 
             if(i == 0 || tmp < min) {
                 min = tmp;
@@ -89,7 +65,7 @@ public class Main {
         while(!stop && nb_depl < MAX_DEPL){
             tmpVecSol2 = ex13_bestNeigh(tmpVecSol);
 
-            if(ex12_f(tmpVecSol) > ex12_f(tmpVecSol2))
+            if(UBQP.f(ubqp.getMatrix(), tmpVecSol) > UBQP.f(ubqp.getMatrix(), tmpVecSol2))
                 tmpVecSol = tmpVecSol2;
             else
                 stop = true;
@@ -101,16 +77,15 @@ public class Main {
     }
 
     public static void ex15_steepestHillWithRestarts(){
-        int[] randInitSol;
         int[] res;
         int nb_trials = 0;
 
         while(nb_trials < MAX_TRIALS){
-            randInitSol = ex11_randomSolution();
-            res = ex14_steepestHill(randInitSol);
+            ubqp.setRandVecsol(rand);
+            res = ex14_steepestHill(ubqp.getVecsol().getVector());
 
-            if(ex12_f(vecSolution.getVector()) > ex12_f(res))
-                vecSolution.setVector(res);
+            if(UBQP.f(ubqp.getMatrix(), ubqp.getVecsol().getVector()) > UBQP.f(ubqp.getMatrix(), res))
+                ubqp.setVecsol(res);
 
             nb_trials++;
         }
