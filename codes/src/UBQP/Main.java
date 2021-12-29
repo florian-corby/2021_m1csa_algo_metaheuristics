@@ -4,16 +4,16 @@ import DataStructures.Matrix;
 
 import java.io.File;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Main {
-    private static Scanner scanner;
     private static Matrix matrix;
-    private static int[] vecSolution;
+    private static VecSol vecSolution;
     private static int solution;
-    private  static int MAX_depl = 8;
-    private  static int MAX_trials = 10;
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
+
+    private static final int MAX_DEPL = 8;
+    private static final int MAX_TRIALS = 10;
+
 
     public static void main(String[] argv) {
         matrix = new Matrix(new File("../res/matrixQ.txt"));
@@ -21,29 +21,29 @@ public class Main {
         matrix.print();
 
         //vecSolution = ex11_randomSolution();
-        vecSolution = new int[] {1, 1, 0, 1, 0, 0};
+        vecSolution = new VecSol(new int[]{1, 1, 0, 1, 0, 0});
         System.out.println("\n");
-        print_solution(vecSolution);
+        vecSolution.print();
 
-        solution = ex12_f(vecSolution);
-        System.out.println("f(X) = " + solution);
+        solution = ex12_f(vecSolution.getVector());
+        System.out.println("f(X) = " + solution + "\n");
 
-        vecSolution = ex14_steepestHill(vecSolution);
-        print_solution(vecSolution);
-        System.out.println("f(X) = " + ex12_f(vecSolution));
+        vecSolution.setVector(ex14_steepestHill(vecSolution.getVector()));
+        vecSolution.print();
+        System.out.println("f(X) = " + ex12_f(vecSolution.getVector()) + "\n");
 
         ex15_steepestHillWithRestarts();
-        print_solution(vecSolution);
-        System.out.println("f(X) = " + ex12_f(vecSolution));
+        vecSolution.print();
+        System.out.println("f(X) = " + ex12_f(vecSolution.getVector()) + "\n");
     }
 
     public static int[] ex11_randomSolution(){
-        vecSolution = new int[matrix.size()];
+        vecSolution.setVector(new int[matrix.size()]);
         for(int i = 0; i < matrix.size(); i++){
-            vecSolution[i] = Math.abs(rand.nextInt() % 2);
+            vecSolution.getVector()[i] = Math.abs(rand.nextInt() % 2);
         }
 
-        return vecSolution;
+        return vecSolution.getVector();
     }
 
     public static int ex12_f(int[] X){
@@ -86,7 +86,7 @@ public class Main {
         int nb_depl = 0;
         boolean stop = false;
         
-        while(!stop && nb_depl < MAX_depl){
+        while(!stop && nb_depl < MAX_DEPL){
             tmpVecSol2 = ex13_bestNeigh(tmpVecSol);
 
             if(ex12_f(tmpVecSol) > ex12_f(tmpVecSol2))
@@ -105,26 +105,14 @@ public class Main {
         int[] res;
         int nb_trials = 0;
 
-        while(nb_trials < MAX_trials){
+        while(nb_trials < MAX_TRIALS){
             randInitSol = ex11_randomSolution();
             res = ex14_steepestHill(randInitSol);
 
-            if(ex12_f(vecSolution) > ex12_f(res))
-                vecSolution = res;
+            if(ex12_f(vecSolution.getVector()) > ex12_f(res))
+                vecSolution.setVector(res);
 
             nb_trials++;
         }
-    }
-
-    public static void print_solution(int[] vecSolution){
-        System.out.print("[");
-        for(int i = 0; i < matrix.size(); i++){
-            System.out.print(vecSolution[i] + " ");
-        }
-        System.out.print("]");
-    }
-
-    public static Scanner getScanner(){
-        return scanner;
     }
 }

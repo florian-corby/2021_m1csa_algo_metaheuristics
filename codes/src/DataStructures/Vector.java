@@ -12,13 +12,17 @@ public class Vector {
     //From file
     public Vector(File f){ this.initFromFile(f); }
 
-    //With nothing (cf. later initialization)
-    public Vector(){
-
+    //From size
+    public Vector(int size){
+        vecSize = size;
+        vector = new int[vecSize];
     }
 
-    //With primitive matrix array
-    public Vector(int[] input_vector){ this.setVector(input_vector); }
+    //From primitive matrix array
+    public Vector(int[] input_vector){
+        this.vecSize = input_vector.length;
+        this.setVector(input_vector);
+    }
 
 
     // ================= METHODS ================= //
@@ -49,16 +53,20 @@ public class Vector {
     }
 
     public void print(){
-        System.out.println("================================================ ");
+        System.out.println("===================================================== ");
+        System.out.println("Vector #" + this.toString() + " has length: " + vecSize);
         System.out.println("Vector #" + this.toString() + " contains: ");
         for(int col = 0; col < vecSize; col++){
                 System.out.printf("% 5d ", vector[col]);
         }
-        System.out.println("================================================ ");
+        System.out.println("\n===================================================== ");
     }
 
     public Integer size(){ return vecSize; }
-    public void setVector(int[] input_vector){ this.vector = input_vector; }
+    public void setVector(int[] input_vector){
+        vecSize = input_vector.length;
+        vector = input_vector;
+    }
     public int[] getVector(){
         return vector;
     }

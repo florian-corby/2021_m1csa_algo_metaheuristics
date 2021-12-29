@@ -11,13 +11,17 @@ public class Matrix {
     //From file
     public Matrix(File f){ this.initFromFile(f); }
 
-    //With nothing (cf. later initialization)
-    public Matrix(){
-
+    //From size
+    public Matrix(int size){
+        matSize = size;
+        matrix = new int[matSize][matSize];
     }
 
-    //With primitive matrix array
-    public Matrix(int[][] input_matrix){ this.setMatrix(input_matrix); }
+    //From primitive matrix array
+    public Matrix(int[][] input_matrix){
+        matSize = input_matrix.length;
+        this.setMatrix(input_matrix);
+    }
 
 
     // ================= METHODS ================= //
@@ -36,13 +40,13 @@ public class Matrix {
     public void initFromFile(File f){
         try {
             Scanner scanner = new Scanner(f);
-            this.matSize = scanner.nextInt();
-            this.matrix = new int[matSize][matSize];
+            matSize = scanner.nextInt();
+            matrix = new int[matSize][matSize];
 
             //On remplit:
             for (int i = 0; i < matSize; i++) {
                 for (int j = 0; j < matSize; j++)
-                    this.matrix[i][j] = scanner.nextInt();
+                    matrix[i][j] = scanner.nextInt();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -50,7 +54,8 @@ public class Matrix {
     }
 
     public void print(){
-        System.out.println("================================================ ");
+        System.out.println("===================================================== ");
+        System.out.println("Matrix #" + this.toString() + " has length: " + matSize);
         System.out.println("Matrix #" + this.toString() + " contains: ");
         for(int line = 0; line < matSize; line++){
             for(int col = 0; col < matSize; col++){
@@ -58,11 +63,14 @@ public class Matrix {
             }
             System.out.println();
         }
-        System.out.println("================================================ ");
+        System.out.println("===================================================== ");
     }
 
     public Integer size(){ return matSize; }
-    public void setMatrix(int[][] input_matrix){ this.matrix = input_matrix; }
+    public void setMatrix(int[][] input_matrix){
+        matSize = input_matrix.length;
+        matrix = input_matrix;
+    }
     public int[][] getMatrix(){
         return matrix;
     }
