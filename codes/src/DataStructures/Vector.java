@@ -2,6 +2,7 @@ package DataStructures;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class Vector {
@@ -10,10 +11,10 @@ public class Vector {
 
     // ================= CONSTRUCTORS ================= //
     //From file
-    public Vector(File f){ this.initFromFile(f); }
+    public Vector(File f, int nbSkips){ this.initFromFile(f, nbSkips); }
 
     //From CLI
-    public Vector(){ this.initFromCLI(); }
+    public Vector(InputStream in, int nbSkips){ this.initFromCLI(in, nbSkips); }
 
     //From size
     public Vector(int size){
@@ -28,10 +29,13 @@ public class Vector {
 
 
     // ================= METHODS ================= //
-    public void initFromCLI(){
+    public void initFromCLI(InputStream in, int nbSkips){
         Scanner scanner = new Scanner(System.in);
         vecSize = scanner.nextInt();
         vector = new int[vecSize];
+
+        for(int i = 0; i < nbSkips; i++)
+            scanner.nextInt();
 
         //On remplit:
         for (int i = 0; i < vecSize; i++) {
@@ -39,11 +43,14 @@ public class Vector {
         }
     }
 
-    public void initFromFile(File f){
+    public void initFromFile(File f, int nbSkips){
         try {
             Scanner scanner = new Scanner(f);
             vecSize = scanner.nextInt();
             vector = new int[vecSize];
+
+            for(int i = 0; i < nbSkips; i++)
+                scanner.nextInt();
 
             //On remplit:
             for (int i = 0; i < vecSize; i++) {

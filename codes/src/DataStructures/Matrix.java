@@ -1,6 +1,7 @@
 package DataStructures;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class Matrix {
@@ -9,10 +10,10 @@ public class Matrix {
 
     // ================= CONSTRUCTORS ================= //
     //From file
-    public Matrix(File f){ this.initFromFile(f); }
+    public Matrix(File f, int nbSkips){ this.initFromFile(f, nbSkips); }
 
     //From CLI
-    public Matrix(){ this.initFromCLI(); }
+    public Matrix(InputStream in, int nbSkips){ this.initFromCLI(in, nbSkips); }
 
     //From size
     public Matrix(int size){
@@ -27,10 +28,13 @@ public class Matrix {
 
 
     // ================= METHODS ================= //
-    public void initFromCLI(){
-        Scanner scanner = new Scanner(System.in);
+    public void initFromCLI(InputStream in, int nbSkips){
+        Scanner scanner = new Scanner(in);
         matSize = scanner.nextInt();
         matrix = new int[matSize][matSize];
+
+        for(int i = 0; i < nbSkips; i++)
+            scanner.nextInt();
 
         //On remplit:
         for (int i = 0; i < matSize; i++) {
@@ -39,11 +43,14 @@ public class Matrix {
         }
     }
 
-    public void initFromFile(File f){
+    public void initFromFile(File f, int nbSkips){
         try {
             Scanner scanner = new Scanner(f);
             matSize = scanner.nextInt();
             matrix = new int[matSize][matSize];
+
+            for(int i = 0; i < nbSkips; i++)
+                scanner.nextInt();
 
             //On remplit:
             for (int i = 0; i < matSize; i++) {

@@ -8,8 +8,8 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] argv) {
-        File f = new File("../res/matrixQ.txt");
-        Matrix matrix = new Matrix(f);
+        File f = new File("../res/partition6.txt");
+        Matrix matrix = new Matrix(f, 1);
         Vector X = new Vector(new int[] {1, 1, 0, 1, 0, 0});
         UBQP ubqp = new UBQP(matrix, X);
 
