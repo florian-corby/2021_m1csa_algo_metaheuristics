@@ -66,7 +66,7 @@ public class UBQP {
                 vec.print();
                 printSolution(vec.getPrimitiveVector());
 
-                vec = new Vector(steepestHillWithRestarts(maxMoves, maxTrials));
+                vec = new Vector(steepestHillWithRestarts(vec.getPrimitiveVector(), maxMoves, maxTrials));
 
                 System.out.println("\n>>>> AFTER " + mode + " :");
                 vec.print();
@@ -75,6 +75,10 @@ public class UBQP {
             default:
                 System.err.println("Wrong Mode in solve() from UBQP class.");
         }
+    }
+
+    public void setVec(int[] toCopy){
+        vec.setPrimitiveVector(toCopy);
     }
 
     // ================= METAHEURISTICS ================= //
@@ -119,19 +123,20 @@ public class UBQP {
         return res;
     }
 
-    public int[] steepestHillWithRestarts(int maxMoves, int maxTrials){
-        int[] randInitSol;
+    public int[] steepestHillWithRestarts(int[] initSol, int maxMoves, int maxTrials){
+        int[] randInitSol = initSol;
         int[] res = new int[PB_SIZE];
         int nbTrials = 0;
 
         while(nbTrials < maxTrials){
-            randInitSol = randomSolution(rand);
             res = steepestHill(randInitSol, maxMoves);
 
             if(f(MATRIX.getPrimitiveMatrix(), randInitSol) < f(MATRIX.getPrimitiveMatrix(), res))
                 res = randInitSol;
 
             nbTrials++;
+
+            randInitSol = randomSolution(rand);
         }
 
         return res;
