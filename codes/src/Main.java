@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println(" ############## TESTING STEEPEST HILL WITH RESTARTS ############## ");
         ubqp.setVec(X.getPrimitiveVector());
-        ubqp.solve(8, 10, "withRestarts");
+        ubqp.solve(8, 3, "withRestarts");
         System.out.println(" ################################################################# \n");
     }
 
