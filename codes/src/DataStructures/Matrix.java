@@ -19,8 +19,7 @@ public class Matrix {
 
     //From primitive matrix array
     public Matrix(int[][] input_matrix){
-        matSize = input_matrix.length;
-        this.setMatrix(input_matrix);
+        setPrimitiveMatrix(input_matrix);
     }
 
 
@@ -67,11 +66,13 @@ public class Matrix {
     }
 
     public Integer size(){ return matSize; }
-    public void setMatrix(int[][] input_matrix){
+    public void setPrimitiveMatrix(int[][] input_matrix){
         matSize = input_matrix.length;
-        matrix = input_matrix;
+        matrix = new int[matSize][matSize];
+        for(int i = 0; i < matSize; i++)
+            System.arraycopy(input_matrix[i], 0, matrix[i], 0, matSize);
     }
-    public int[][] getMatrix(){
+    public int[][] getPrimitiveMatrix(){
         return matrix;
     }
 }

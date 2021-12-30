@@ -1,7 +1,14 @@
 package Metaheuristics;
 
+import java.util.Random;
+
 public interface Solution {
-    Solution genNeighb(Solution s);
-    Solution betterNeighb(Solution s1, Solution s2);
-    Solution bestNeighb(Solution s);
+    Solution[] genNeighbourhood();
+    Boolean isBetterNeighb(Solution other);
+    Solution betterNeighb(Solution other);
+    Solution bestNeighb();
+    Solution clone();
+    void copy(Solution s);
+    void randomize(Random rand);
+    void print();
 }

@@ -20,8 +20,7 @@ public class Vector {
 
     //From primitive matrix array
     public Vector(int[] input_vector){
-        this.vecSize = input_vector.length;
-        this.setVector(input_vector);
+        setVector(input_vector);
     }
 
 
@@ -65,7 +64,8 @@ public class Vector {
     public Integer size(){ return vecSize; }
     public void setVector(int[] input_vector){
         vecSize = input_vector.length;
-        vector = input_vector;
+        vector = new int[vecSize];
+        System.arraycopy(input_vector, 0, vector, 0, vecSize);
     }
     public int[] getVector(){
         return vector;
