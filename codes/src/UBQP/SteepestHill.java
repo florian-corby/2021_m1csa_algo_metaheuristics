@@ -2,7 +2,7 @@ package UBQP;
 
 import java.util.Random;
 
-public class SteepestHill {
+public abstract class SteepestHill {
 
     public static int[] bestNeighb(int[][] mat, int[] X){
         int min = 0, tmp, bestIdx = 0, pbSize = X.length;

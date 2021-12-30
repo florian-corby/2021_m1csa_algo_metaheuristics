@@ -21,14 +21,20 @@ public class Main {
 
 
         System.out.println(" ##################### TESTING STEEPEST HILL ##################### ");
-        ubqp.solve(8, 0, "noRestarts");
+        ubqp.solve(8, 0, 0, "noRestarts");
         System.out.println(" ################################################################# \n");
 
 
         System.out.println(" ############## TESTING STEEPEST HILL WITH RESTARTS ############## ");
         ubqp.setVec(X.getPrimitiveVector());
-        ubqp.solve(8, 3, "withRestarts");
+        ubqp.solve(8, 3, 0, "withRestarts");
         System.out.println(" ################################################################# \n");
+
+
+        System.out.println(" ############## TESTING TABU ALGORITHM ############## ");
+        ubqp.setVec(X.getPrimitiveVector());
+        ubqp.solve(8, 3, 5, "withRestarts");
+        System.out.println(" #################################################### \n");
     }
 
 }

@@ -6,20 +6,17 @@ import DataStructures.Vector;
 import java.util.Random;
 
 public class UBQP {
-    private final int PB_SIZE;
-    private final Matrix MATRIX;
+    private final Matrix MAT;
     private Vector vec;
 
     // ================= CONSTRUCTORS ================= //
     public UBQP(Matrix mat){
-        MATRIX = mat;
-        PB_SIZE = mat.size();
-        vec = new Vector(randomSolution(PB_SIZE, new Random()));
+        MAT = mat;
+        vec = new Vector(randomSolution(mat.size(), new Random()));
     }
 
     public UBQP(Matrix mat, Vector vec){
-        MATRIX = mat;
-        PB_SIZE = mat.size();
+        MAT = mat;
         this.vec = vec;
     }
 
@@ -48,22 +45,29 @@ public class UBQP {
     // ================= METHODS ================= //
     public void printSolution(){
         vec.print();
-        System.out.println("f(Vector) = " + f(MATRIX.getPrimitiveMatrix(), vec.getPrimitiveVector()));
+        System.out.println("f(Vector) = " + f(MAT.getPrimitiveMatrix(), vec.getPrimitiveVector()));
     }
 
-    public void solve(int maxMoves, int maxTrials, String mode){
+    public void solve(int maxMoves, int maxTrials, int tabuSize, String mode){
         switch(mode){
             case "noRestarts":
                 System.out.println("\n>>>> BEFORE " + mode + " :");
                 printSolution();
-                vec = new Vector(SteepestHill.run(MATRIX.getPrimitiveMatrix(), vec.getPrimitiveVector(), maxMoves));
+                vec = new Vector(SteepestHill.run(MAT.getPrimitiveMatrix(), vec.getPrimitiveVector(), maxMoves));
                 System.out.println("\n>>>> AFTER " + mode + " :");
                 printSolution();
                 break;
             case "withRestarts":
                 System.out.println("\n>>>> BEFORE " + mode + " :");
                 printSolution();
-                vec = new Vector(SteepestHill.runWithRestarts(MATRIX.getPrimitiveMatrix(), vec.getPrimitiveVector(), maxMoves, maxTrials));
+                vec = new Vector(SteepestHill.runWithRestarts(MAT.getPrimitiveMatrix(), vec.getPrimitiveVector(), maxMoves, maxTrials));
+                System.out.println("\n>>>> AFTER " + mode + " :");
+                printSolution();
+                break;
+            case "tabu":
+                System.out.println("\n>>>> BEFORE " + mode + " :");
+                printSolution();
+                vec = new Vector(Tabu.run(MAT.getPrimitiveMatrix(), vec.getPrimitiveVector(), maxMoves, tabuSize));
                 System.out.println("\n>>>> AFTER " + mode + " :");
                 printSolution();
                 break;
