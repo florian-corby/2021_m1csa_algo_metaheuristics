@@ -1,10 +1,10 @@
+package UBQP;
+
 import DataStructures.Matrix;
 import DataStructures.Vector;
-import UBQP.UBQP;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
