@@ -40,6 +40,42 @@ public abstract class SteepestHill {
         return res;
     }
 
+    public static int[] runWithConstraint(int[][] mat, int[] initSol, int maxMoves, int p){
+        int[] res = initSol; int[] tmp;
+        int nbMoves = 0; boolean stop = false;
+
+        while(!stop && nbMoves < maxMoves){
+            tmp = bestNeighbWithConstraint(mat, res, p);
+
+            if(UBQP.f(mat, res) > UBQP.f(mat, tmp))
+                res = tmp;
+            else
+                stop = true;
+
+            nbMoves++;
+        }
+
+        return res;
+    }
+
+    public static int[] runWithRestartsAndConstraint(int[][] mat, int[] initSol, int maxMoves, int maxTrials, int p){
+        int size = initSol.length, nbTrials = 0;
+        int[] randInitSol = initSol, res = new int[size], tmp;
+
+        while(nbTrials < maxTrials){
+            tmp = runWithConstraint(mat, randInitSol, maxMoves, p);
+
+            if(UBQP.f(mat, tmp) < UBQP.f(mat, res))
+                res = tmp;
+
+            nbTrials++;
+
+            randInitSol = UBQP.randomSolution(size, new Random());
+        }
+
+        return res;
+    }
+
     // ================= PRIVATE AUXILIARY METHODS ================= //
     private static int[] bestNeighb(int[][] mat, int[] X){
         int min = 0, tmp, bestIdx = 0, pbSize = X.length;
@@ -60,5 +96,32 @@ public abstract class SteepestHill {
 
         res[bestIdx] = (res[bestIdx] + 1) % 2;
         return res;
+    }
+
+    private static int[] bestNeighbWithConstraint(int[][] mat, int[] X, int p){
+        int min = 0, tmp, bestIdx = 0, pbSize = X.length;
+        int[] res = new int[pbSize];
+        System.arraycopy(X, 0, res, 0, pbSize);
+
+        for(int i = 0; i < pbSize; i++){
+            res[i] = (res[i] + 1) % 2;
+            tmp = UBQP.f(mat, res);
+
+            if((i == 0 || tmp < min) && isBitSumAtLeastP(res, p)) {
+                min = tmp;
+                bestIdx = i;
+            }
+
+            res[i] = (res[i] + 1) % 2;
+        }
+
+        res[bestIdx] = (res[bestIdx] + 1) % 2;
+        return res;
+    }
+
+    private static boolean isBitSumAtLeastP(int[] X, int p){
+        int sum = 0;
+        for (int x : X) sum += x;
+        return sum >= p;
     }
 }

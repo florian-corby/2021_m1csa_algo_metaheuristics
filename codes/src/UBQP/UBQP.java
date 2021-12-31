@@ -48,7 +48,7 @@ public class UBQP {
         System.out.println("f(Vector) = " + f(MAT.getPrimitiveMatrix(), vec.getPrimitiveVector()));
     }
 
-    public void solve(int maxMoves, int maxTrials, int tabuSize, String mode){
+    public void solve(int maxMoves, int maxTrials, int tabuSize, int constraint, String mode){
         switch(mode){
             case "noRestarts":
                 System.out.println("\n>>>> BEFORE " + mode + " :");
@@ -64,6 +64,13 @@ public class UBQP {
                 System.out.println("\n>>>> AFTER " + mode + " :");
                 printSolution();
                 break;
+            case "withConstraint":
+                System.out.println("\n>>>> BEFORE " + mode + " :");
+                printSolution();
+                vec = new Vector(SteepestHill.runWithRestartsAndConstraint(MAT.getPrimitiveMatrix(), vec.getPrimitiveVector(), maxMoves, maxTrials, constraint));
+                System.out.println("\n>>>> AFTER " + mode + " :");
+                printSolution();
+                break;
             case "tabu":
                 System.out.println("\n>>>> BEFORE " + mode + " :");
                 printSolution();
@@ -73,10 +80,11 @@ public class UBQP {
                 break;
             default:
                 System.err.println("Wrong Mode in solve() from UBQP class.");
+                System.exit(1);
+                break;
         }
     }
 
-    public void setVec(int[] toCopy){
-        vec.setPrimitiveVector(toCopy);
-    }
+    public Vector getVec() {return new Vector(vec.getPrimitiveVector());}
+    public void setVec(int[] toCopy){ vec.setPrimitiveVector(toCopy); }
 }
