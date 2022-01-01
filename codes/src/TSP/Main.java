@@ -19,7 +19,6 @@ public class Main {
         tspDistTest.getVec().print();
         System.out.println("Expected distance: 263.88km");
         tspDistTest.printDist();
-
         System.out.println(" ################################################################################ \n");
 
 
@@ -35,7 +34,27 @@ public class Main {
         Vector bestNeighb = new Vector(SteepestHill.bestNeighb(tspDistTest.getCities(), tspDistTest.getVec().getPrimitiveVector()));
         bestNeighb.print();
         System.out.println("Distance: " + TSP.getDistance(tspDistTest.getCities(), bestNeighb.getPrimitiveVector()) + " km");
+        System.out.println(" ################################################################################ \n");
 
+
+        System.out.println(" ############## TESTING BEST NEIGHBOUR FUNCTION FROM STEEPEST HILL ############## ");
+        System.out.println("The following tests are conducted on whichever file is specified in CLI...\n");
+
+        System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
+        tspDistTest.getVec().print();
+        tspDistTest.printDist();
+        System.out.println();
+
+        System.out.println(">>> BEST SEQUENCE OF CITIES (without restarts): ");
+        Vector bestSol = new Vector(SteepestHill.run(tspDistTest.getCities(), tspDistTest.getVec().getPrimitiveVector(), 8));
+        bestSol.print();
+        System.out.println("Distance: " + TSP.getDistance(tspDistTest.getCities(), bestSol.getPrimitiveVector()) + " km");
+        System.out.println();
+
+        System.out.println(">>> BEST SEQUENCE OF CITIES (with restarts): ");
+        Vector bestSolWithRestarts = new Vector(SteepestHill.runWithRestarts(tspDistTest.getCities(), tspDistTest.getVec().getPrimitiveVector(), 8, 3));
+        bestSolWithRestarts.print();
+        System.out.println("Distance: " + TSP.getDistance(tspDistTest.getCities(), bestSolWithRestarts.getPrimitiveVector()) + " km");
         System.out.println(" ################################################################################ \n");
     }
 

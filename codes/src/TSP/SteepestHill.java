@@ -3,6 +3,43 @@ package TSP;
 import DataStructures.Vector;
 
 public abstract class SteepestHill {
+    public static int[] run(City[] cities, int[] citySequence, int maxMoves){
+        int[] tmpVecSol;
+        int[] res = Vector.clonePrimitiveVector(citySequence);
+        int nbMoves = 0; boolean stop = false;
+
+        while(!stop && nbMoves < maxMoves){
+            tmpVecSol = bestNeighb(cities, res);
+
+            if(TSP.getDistance(cities, res) > TSP.getDistance(cities, tmpVecSol))
+                res = tmpVecSol;
+            else
+                stop = true;
+
+            nbMoves++;
+        }
+
+        return res;
+    }
+
+    public static int[] runWithRestarts(City[] cities,  int[] citySequence, int maxMoves, int maxTrials){
+        int nbCities = cities.length, nbTrials = 0;
+        int[] randInitSol = TSP.getRandVec(nbCities).getPrimitiveVector(), res = citySequence, tmp;
+
+        while(nbTrials < maxTrials){
+            tmp = run(cities, randInitSol, maxMoves);
+
+            if(TSP.getDistance(cities, tmp) < TSP.getDistance(cities, res))
+                res = tmp;
+
+            nbTrials++;
+
+            randInitSol = TSP.getRandVec(nbCities).getPrimitiveVector();
+        }
+
+        return res;
+    }
+
     public static int[] bestNeighb(City[] cities, int[] citySequence){
         int nbCities = cities.length;
         int[] tmpVecSol = Vector.clonePrimitiveVector(citySequence);
