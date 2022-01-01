@@ -47,24 +47,24 @@ public class TSP {
         return Math.sqrt((v1[0] - v2[0]) * (v1[0] - v2[0]) + (v1[1] - v2[1]) * (v1[1] - v2[1]));
     }
 
-
-    // ================= METHODS ================= //
-    public double getDistance(City[] cities){
+    public static double getDistance(City[] cities, int[] vec){
         double res = euclidianDistance(new int[]{0, 0},
-                                       getCity(vec.getPrimitiveVector()[0]-1).getCoordinates());
+                cities[vec[0]-1].getCoordinates());
 
         for(int i = 0; i < cities.length - 1; i++){
-            res += euclidianDistance(getCity(vec.getPrimitiveVector()[i]-1).getCoordinates(),
-                                     getCity(vec.getPrimitiveVector()[i+1]-1).getCoordinates());
+            res += euclidianDistance(cities[vec[i]-1].getCoordinates(),
+                    cities[vec[i+1]-1].getCoordinates());
         }
 
-        res += euclidianDistance(getCity(vec.getPrimitiveVector()[cities.length-1]-1).getCoordinates(),
-                                 new int[]{0,0});
+        res += euclidianDistance(cities[vec[cities.length-1]-1].getCoordinates(),
+                new int[]{0,0});
 
         return res;
     }
 
-    public void printDist(){System.out.println("Distance: " + getDistance(cities) + " km");}
+
+    // ================= METHODS ================= //
+    public void printDist(){System.out.println("Distance: " + getDistance(cities, vec.getPrimitiveVector()) + " km");}
 
     public City getCity(int idx){ return new City(cities[idx]); }
     public City[] getCities(){
