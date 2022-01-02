@@ -37,7 +37,7 @@ public class Main {
         System.out.println(" ################################################################################ \n");
 
 
-        System.out.println(" ############## TESTING BEST NEIGHBOUR FUNCTION FROM STEEPEST HILL ############## ");
+        System.out.println(" ######################## TESTING STEEPEST HILL ALGORITHM ####################### ");
         System.out.println("The following tests are conducted on whichever file is specified in CLI...\n");
 
         System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
@@ -55,6 +55,24 @@ public class Main {
         Vector bestSolWithRestarts = new Vector(SteepestHill.runWithRestarts(tspDistTest.getCities(), tspDistTest.getVec().getPrimitiveVector(), 8, 3));
         bestSolWithRestarts.print();
         System.out.println("Distance: " + TSP.getDistance(tspDistTest.getCities(), bestSolWithRestarts.getPrimitiveVector()) + " km");
+        System.out.println(" ################################################################################ \n");
+
+
+        System.out.println(" ############################# TESTING TABU ALGORITHM ########################### ");
+        System.out.println("The following tests are conducted on whichever file is specified in CLI...\n");
+
+        TSP tspTabuTest = new TSP("../res/tsp101.txt");
+        tspTabuTest.getVec().print();
+
+        System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
+        tspTabuTest.getVec().print();
+        tspTabuTest.printDist();
+        System.out.println();
+
+        System.out.println(">>> BEST SEQUENCE OF CITIES: ");
+        Vector bestSolTabu = new Vector(Tabu.run(tspTabuTest.getCities(), tspTabuTest.getVec().getPrimitiveVector(), 150, 80));
+        bestSolTabu.print();
+        System.out.println("Distance: " + TSP.getDistance(tspTabuTest.getCities(), bestSolTabu.getPrimitiveVector()) + " km");
         System.out.println(" ################################################################################ \n");
     }
 
