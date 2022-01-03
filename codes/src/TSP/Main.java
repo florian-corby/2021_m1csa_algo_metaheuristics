@@ -2,50 +2,79 @@ package TSP;
 
 import DataStructures.Vector;
 
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] argv) {
-        if(argv.length < 1 || argv.length > 2){
-            System.err.println("ERROR: command syntax is \"tsp [-d] <fileName>\"");
+        if(argv.length < 2 || argv.length > 3){
+            System.err.println("ERROR: command syntax is \"tsp [-d] <fileName> <steepest|tabu>\"");
             System.exit(1);
         }
         else{
-            if(argv.length == 2 && argv[0].equals("-d")){ debugTests(); mainTests(argv[1]); }
-            else mainTests(argv[0]);
+            if(argv.length == 3 && argv[0].equals("-d")){ debugTests(); mainTests(argv[1], argv[2]); }
+            else mainTests(argv[0], argv[1]);
         }
     }
 
     // ================= PRIVATE AUXILIARY METHODS ================= //
-    private static void mainTests(String fileName){
-        TSP tspSteepestTest = new TSP(fileName);
-        System.out.println(" ############### TESTING STEEPEST HILL ALGORITHM (with restarts) ################ ");
-        System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
-        tspSteepestTest.getVec().print();
-        tspSteepestTest.printDist();
-        System.out.println();
+    private static void mainTests(String fileName, String algoName){
+        switch(algoName) {
+            case "steepest":
+                //Inputting last parameters for full tests control with .jar:
+                Scanner steepestSc = new Scanner(System.in);
+                System.out.print("Input maxMoves: ");
+                int steepestMaxMoves = steepestSc.nextInt();
+                System.out.print("Input maxTrials: ");
+                int steepestMaxTrials = steepestSc.nextInt();
+                System.out.println();
 
-        System.out.println(">>> BEST SEQUENCE OF CITIES : ");
-        int[] bestSeqFound = SteepestHill.runWithRestarts(tspSteepestTest.getCities(), tspSteepestTest.getVec().getPrimitiveVector(), 8, 3);
-        tspSteepestTest.setVec(bestSeqFound);
-        tspSteepestTest.getVec().print();
-        tspSteepestTest.printDist();
-        System.out.println(" ################################################################################ \n");
+                TSP tspSteepestTest = new TSP(fileName);
+                System.out.println(" ############### TESTING STEEPEST HILL ALGORITHM (with restarts) ################ ");
+                System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
+                tspSteepestTest.getVec().print();
+                tspSteepestTest.printDist();
+                System.out.println();
 
+                System.out.println(">>> BEST SEQUENCE OF CITIES : ");
+                int[] bestSeqFound = SteepestHill.runWithRestarts(tspSteepestTest.getCities(), tspSteepestTest.getVec().getPrimitiveVector(), steepestMaxMoves, steepestMaxTrials);
+                tspSteepestTest.setVec(bestSeqFound);
+                tspSteepestTest.getVec().print();
+                tspSteepestTest.printDist();
+                System.out.println(" ################################################################################ \n");
+                break;
 
-        TSP tspTabuTest = new TSP(fileName);
-        System.out.println(" ############################# TESTING TABU ALGORITHM ########################### ");
-        System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
-        tspTabuTest.getVec().print();
-        tspTabuTest.printDist();
-        System.out.println();
+            case "tabu":
+                //Inputting last parameters for full tests control with .jar:
+                Scanner tabuSc = new Scanner(System.in);
+                System.out.print("Input maxMoves: ");
+                int tabuMaxMoves = tabuSc.nextInt();
+                System.out.print("Input tabuSize: ");
+                int tabuMaxTrials = tabuSc.nextInt();
+                System.out.println();
 
-        System.out.println(">>> BEST SEQUENCE OF CITIES: ");
-        int[] tabuBestSeqFound = Tabu.run(tspTabuTest.getCities(), tspTabuTest.getVec().getPrimitiveVector(), 20, 10);
-        tspTabuTest.setVec(tabuBestSeqFound);
-        tspTabuTest.getVec().print();
-        tspTabuTest.printDist();
-        System.out.println(" ################################################################################ \n");
+                TSP tspTabuTest = new TSP(fileName);
+                System.out.println(" ############################# TESTING TABU ALGORITHM ########################### ");
+                System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
+                tspTabuTest.getVec().print();
+                tspTabuTest.printDist();
+                System.out.println();
 
+                System.out.println(">>> TABU ALGORITHM EXECUTION: ");
+                int[] tabuBestSeqFound = Tabu.run(tspTabuTest.getCities(), tspTabuTest.getVec().getPrimitiveVector(), tabuMaxMoves, tabuMaxTrials);
+
+                System.out.println(">>> BEST SEQUENCE OF CITIES: ");
+                tspTabuTest.setVec(tabuBestSeqFound);
+                tspTabuTest.getVec().print();
+                tspTabuTest.printDist();
+                System.out.println(" ################################################################################ \n");
+                break;
+
+            default:
+                System.err.println("ERROR: invalid algorithm name, possible names are \"steepest\" or \"tabu\"");
+                System.exit(1);
+                break;
+        }
     }
 
     private static void debugTests(){

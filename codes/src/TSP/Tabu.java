@@ -27,6 +27,8 @@ public abstract class Tabu {
             }
         }
 
+        //Not essential to the algorithm but checks coherence of the algorithm:
+        debugTabuAlgo(nbMoves, currentCitySeq, tabu);
         return tmpBestCitySeq;
     }
 
@@ -61,6 +63,10 @@ public abstract class Tabu {
         return res;
     }
 
+    public static boolean isBetterNeighb(City[] cities, int[] citySeq1, int[] citySeq2){
+        return citySeq2 == null || TSP.getDistance(cities, citySeq1) <= TSP.getDistance(cities, citySeq2);
+    }
+
     public static boolean isTabu(LinkedList<int[]> tabu, int[] citySeq){
         boolean found = false;
 
@@ -74,17 +80,26 @@ public abstract class Tabu {
         return found;
     }
 
-    public static boolean isBetterNeighb(City[] cities, int[] citySeq1, int[] citySeq2){
-        return citySeq2 == null || TSP.getDistance(cities, citySeq1) <= TSP.getDistance(cities, citySeq2);
-    }
-
-
     // ================= PRIVATE AUXILIARY METHODS ================= //
     // These methods are private as they should be simple enough to not be tested regularly...
     private static void addTabu(int[] citySequence, LinkedList<int[]> tabu, int tabuSize){
-        if(tabu.size() > tabuSize)
+        if(tabu.size() >= tabuSize)
             tabu.removeFirst();
         tabu.add(citySequence);
+    }
+
+    private static void debugTabuAlgo(int nbMoves, int[] currentCitySeq, LinkedList<int[]> tabu){
+        System.out.println("Number of moves used to reach last solution: " + nbMoves);
+        System.out.print("Last solution reached: [ ");
+        for(int cityID : currentCitySeq) System.out.print(cityID + " ");
+        System.out.println("]");
+        System.out.println("City sequences in tabu list: ");
+        for(int[] citySeq : tabu){
+            System.out.print("[ ");
+            for(int cityID : citySeq) System.out.print(cityID + " ");
+            System.out.println("]");
+        }
+        System.out.println();
     }
 
     private static boolean vecEquals(int[] vec1, int[] vec2){

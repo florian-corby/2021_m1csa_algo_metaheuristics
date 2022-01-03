@@ -26,22 +26,7 @@ public class TSP {
         catch (FileNotFoundException e) { e.printStackTrace(); }
     }
 
-
     // ================= STATIC METHODS ================= //
-    public static Vector getRandVec(int size){
-        int[] res = new int[size]; Random rand = new Random(); int tmp, randIdx;
-        for(int i = 0; i < size; i++) res[i] = i+1;
-
-        for(int i = 0; i < size; i++){
-            randIdx = rand.nextInt(size);
-            tmp = res[i];
-            res[i] = res[randIdx];
-            res[randIdx] = tmp;
-        }
-
-        return new Vector(res);
-    }
-
     public static double euclidianDistance(int[] v1, int[] v2){
         return Math.sqrt((v1[0] - v2[0]) * (v1[0] - v2[0]) + (v1[1] - v2[1]) * (v1[1] - v2[1]));
     }
@@ -61,10 +46,23 @@ public class TSP {
         return res;
     }
 
+    public static Vector getRandVec(int size){
+        int[] res = new int[size]; Random rand = new Random(); int tmp, randIdx;
+        for(int i = 0; i < size; i++) res[i] = i+1;
+
+        for(int i = 0; i < size; i++){
+            randIdx = rand.nextInt(size);
+            tmp = res[i];
+            res[i] = res[randIdx];
+            res[randIdx] = tmp;
+        }
+
+        return new Vector(res);
+    }
+
     public static void printDist(City[] cities, Vector vec){
         System.out.println("Distance: " + getDistance(cities, vec.getPrimitiveVector()) + " km");
     }
-
 
     // ================= METHODS ================= //
     public void printDist(){printDist(cities, vec);}

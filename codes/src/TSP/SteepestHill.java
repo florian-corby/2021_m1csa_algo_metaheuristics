@@ -24,24 +24,6 @@ public abstract class SteepestHill {
 
     // ================= PUBLIC AUXILIARY METHODS ================= //
     // These methods are public for testing purposes but should be private in a production context...
-    public static int[] run(City[] cities, int[] citySequence, int maxMoves){
-        int[] tmpCitySeq, res = citySequence;
-        int nbMoves = 0; boolean stop = false;
-
-        while(!stop && nbMoves < maxMoves){
-            tmpCitySeq = bestNeighb(cities, res);
-
-            if(TSP.getDistance(cities, tmpCitySeq) < TSP.getDistance(cities, res))
-                res = tmpCitySeq;
-            else
-                stop = true;
-
-            nbMoves++;
-        }
-
-        return res;
-    }
-
     public static int[] bestNeighb(City[] cities, int[] citySequence){
         int nbCities = cities.length;
         int[] res = new int[nbCities];
@@ -57,6 +39,24 @@ public abstract class SteepestHill {
                 }
                 swap(citySequence, i, j);
             }
+        }
+
+        return res;
+    }
+
+    public static int[] run(City[] cities, int[] citySequence, int maxMoves){
+        int[] tmpCitySeq, res = citySequence;
+        int nbMoves = 0; boolean stop = false;
+
+        while(!stop && nbMoves < maxMoves){
+            tmpCitySeq = bestNeighb(cities, res);
+
+            if(TSP.getDistance(cities, tmpCitySeq) < TSP.getDistance(cities, res))
+                res = tmpCitySeq;
+            else
+                stop = true;
+
+            nbMoves++;
         }
 
         return res;
