@@ -1,7 +1,6 @@
 package TSP;
 
 import DataStructures.Vector;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Random;
@@ -30,7 +29,7 @@ public class TSP {
 
     // ================= STATIC METHODS ================= //
     public static Vector getRandVec(int size){
-        int[] res = new int[size]; Random rand = new Random(); int tmp; int randIdx;
+        int[] res = new int[size]; Random rand = new Random(); int tmp, randIdx;
         for(int i = 0; i < size; i++) res[i] = i+1;
 
         for(int i = 0; i < size; i++){
@@ -62,10 +61,13 @@ public class TSP {
         return res;
     }
 
+    public static void printDist(City[] cities, Vector vec){
+        System.out.println("Distance: " + getDistance(cities, vec.getPrimitiveVector()) + " km");
+    }
+
 
     // ================= METHODS ================= //
-    public void printDist(){System.out.println("Distance: " + getDistance(cities, vec.getPrimitiveVector()) + " km");}
-
+    public void printDist(){printDist(cities, vec);}
     public City getCity(int idx){ return new City(cities[idx]); }
     public City[] getCities(){
         City[] res = new City[cities.length];
