@@ -28,7 +28,7 @@ public abstract class Tabu {
         }
 
         //Not essential to the algorithm but checks coherence of the algorithm:
-        debugTabuAlgo(nbMoves, currentCitySeq, tabu);
+        debugTabu(nbMoves, currentCitySeq, tabu);
         return tmpBestCitySeq;
     }
 
@@ -88,7 +88,7 @@ public abstract class Tabu {
         tabu.add(citySequence);
     }
 
-    private static void debugTabuAlgo(int nbMoves, int[] currentCitySeq, LinkedList<int[]> tabu){
+    private static void debugTabu(int nbMoves, int[] currentCitySeq, LinkedList<int[]> tabu){
         System.out.println("Number of moves used to reach last solution: " + nbMoves);
         System.out.print("Last solution reached: [ ");
         for(int cityID : currentCitySeq) System.out.print(cityID + " ");

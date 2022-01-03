@@ -130,6 +130,7 @@ fabric.properties
 
 # Package Files #
 *.jar
+!tsp.jar
 *.war
 *.nar
 *.ear

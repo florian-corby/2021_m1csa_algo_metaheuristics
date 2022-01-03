@@ -1,6 +1,5 @@
 package TSP;
 
-import DataStructures.Vector;
 
 public abstract class SteepestHill {
     // ================= MAIN METHODS ================= //
@@ -10,7 +9,9 @@ public abstract class SteepestHill {
         int[] randCitySeq = TSP.getRandVec(nbCities).getPrimitiveVector(), res = citySequence, tmpCitySeq;
 
         while(nbTrials < maxTrials){
+            System.out.println("Trial #" + (nbTrials+1) + " :");
             tmpCitySeq = run(cities, randCitySeq, maxMoves);
+            if(nbTrials < maxTrials-1) System.out.println();
 
             if(TSP.getDistance(cities, tmpCitySeq) < TSP.getDistance(cities, res))
                 res = tmpCitySeq;
@@ -48,6 +49,13 @@ public abstract class SteepestHill {
         int[] tmpCitySeq, res = citySequence;
         int nbMoves = 0; boolean stop = false;
 
+        //Not essential to the algorithm but checks coherence of the algorithm:
+        System.out.println("Random initial city sequence is: ");
+        System.out.print("[ ");
+        for(int cityID : citySequence) System.out.print(cityID + " ");
+        System.out.println("]");
+
+        //Essential to the algorithm:
         while(!stop && nbMoves < maxMoves){
             tmpCitySeq = bestNeighb(cities, res);
 
@@ -59,11 +67,20 @@ public abstract class SteepestHill {
             nbMoves++;
         }
 
+        //Not essential to the algorithm but checks coherence of the algorithm:
+        debugSteepestRun(nbMoves, res);
         return res;
     }
 
     // ================= PRIVATE AUXILIARY METHODS ================= //
     // These methods are private as they should be simple enough to not be tested regularly...
+    private static void debugSteepestRun(int nbMoves, int[] res){
+        System.out.println(nbMoves + " moves required to reach the following solution:");
+        System.out.print("[ ");
+        for(int cityID : res) System.out.print(cityID + " ");
+        System.out.println("]");
+    }
+
     private static void swap(int[] vec, int idx1, int idx2){
         int tmp = vec[idx1];
         vec[idx1] = vec[idx2];

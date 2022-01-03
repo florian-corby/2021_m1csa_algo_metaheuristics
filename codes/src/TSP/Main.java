@@ -1,20 +1,17 @@
 package TSP;
 
-import DataStructures.Vector;
+//import DataStructures.Vector;
 
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] argv) {
-        if(argv.length < 2 || argv.length > 3){
-            System.err.println("ERROR: command syntax is \"tsp [-d] <fileName> <steepest|tabu>\"");
+        if(argv.length != 2){
+            System.err.println("ERROR: command syntax is \"tsp <fileName> <steepest|tabu>\"");
             System.exit(1);
         }
-        else{
-            if(argv.length == 3 && argv[0].equals("-d")){ debugTests(); mainTests(argv[1], argv[2]); }
-            else mainTests(argv[0], argv[1]);
-        }
+        mainTests(argv[0], argv[1]);
     }
 
     // ================= PRIVATE AUXILIARY METHODS ================= //
@@ -36,8 +33,11 @@ public class Main {
                 tspSteepestTest.printDist();
                 System.out.println();
 
-                System.out.println(">>> BEST SEQUENCE OF CITIES : ");
+                System.out.println(">>> STEEPEST HILL ALGORITHM EXECUTION (with restarts): ");
                 int[] bestSeqFound = SteepestHill.runWithRestarts(tspSteepestTest.getCities(), tspSteepestTest.getVec().getPrimitiveVector(), steepestMaxMoves, steepestMaxTrials);
+                System.out.println();
+
+                System.out.println(">>> BEST SEQUENCE OF CITIES : ");
                 tspSteepestTest.setVec(bestSeqFound);
                 tspSteepestTest.getVec().print();
                 tspSteepestTest.printDist();
@@ -77,17 +77,17 @@ public class Main {
         }
     }
 
-    private static void debugTests(){
-        TSP tspRandTest = new TSP("../res/tsp5.txt");
+    /*private static void debugTests(String filename){
+        TSP tspRandTest = new TSP(filename);
         System.out.println(" ##################### TESTING CUSTOM CLASSES FOR EXERCISE ##################### ");
-        System.out.println("The following tests are conducted on file tsp5.txt for simplicity...\n");
+        System.out.println("Ideally these tests should be executed on file tsp5.txt for simplicity...\n");
 
-        System.out.println(">>> RANDOM CITY SEQUENCE GENERATION (on file tsp5.txt):");
+        System.out.println(">>> RANDOM CITY SEQUENCE GENERATION:");
         tspRandTest.getVec().print();
         System.out.println();
 
-        System.out.println(">>> DISTANCE FUNCTION TEST (on file tsp5.txt):");
-        TSP tspDistTest = new TSP("../res/tsp5.txt");
+        System.out.println(">>> DISTANCE FUNCTION TEST:");
+        TSP tspDistTest = new TSP(filename);
         tspDistTest.setVec(new int[]{5, 3, 4, 1, 2});
         tspDistTest.getVec().print();
         System.out.println("Expected distance: 263.88km");
@@ -96,7 +96,7 @@ public class Main {
 
 
         System.out.println(" ############## TESTING BEST NEIGHBOUR FUNCTION FROM STEEPEST HILL ############## ");
-        System.out.println("The following tests are conducted on file tsp5.txt for simplicity...\n");
+        System.out.println("Ideally these tests should be executed on file tsp5.txt for simplicity...\n");
 
         System.out.println(">>> INITIAL SEQUENCE OF CITIES: ");
         tspDistTest.getVec().print();
@@ -108,5 +108,5 @@ public class Main {
         bestNeighb.print();
         System.out.println("Distance: " + TSP.getDistance(tspDistTest.getCities(), bestNeighb.getPrimitiveVector()) + " km");
         System.out.println(" ################################################################################ \n");
-    }
+    }*/
 }
