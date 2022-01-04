@@ -151,6 +151,7 @@ Vector #DataStructures.Vector@54a097cc contains:
 Distance: 194.04052963659356 km
 ####################################################################
 	\end{lstlisting}
+With 10 maximum moves and 3 maximum trials the best solution was reached in a fraction of a second.
 
 \newpage
 \subsubsection{Tabu algorithm}
@@ -189,10 +190,14 @@ Vector #DataStructures.Vector@3551a94 contains:
 Distance: 194.04052963659356 km
 ################################################################################ 	
 \end{lstlisting}
+As with the steepest hill algorithm above, here with 10 maximum moves and a tabu list size of 5 the best solution was reached in a fraction of a second.\\
 
 On the tsp5.txt we have two possible best solutions as shown above: 3     5     4     2     1  and  1     2     4     5     3  with a distance of 194.04052963659356 km. We notice that one solution is the inverted version of the other solution which trivially means that the same distance is traveled whether we do the traveling salesman circuit in one way or the other.\\
 
+	\newpage
 	\subsection{tsp101.txt instance}
-Given the amount of cities (101 of them) I couldn't find no best local optimum despite the algorithm used and the amount of moves/trials/tabu size involved. But I managed once to go down to around 994km with the tabu algorithm with 1000 moves and tabu list size of 500. Recently, the steepest hill algorithm provided a solution with 1023.92 km of traveled distance with 400 moves and 100 trials.  So we can conclude that both of these algorithms find more or less the same solutions. One algorithm take more memory space (the tabu algorithm) while the other seems to take more computing time (the steepest hill algorithm) meaning that the choice of one or the other algorithm depends on the application they are used for.
+Given the amount of cities (101 of them) I couldn't find no best local optimum despite the algorithm used and the amount of moves/trials/tabu size involved. But I managed once to go down to around 994km with the tabu algorithm with 1000 moves and tabu list size of 500. Recently, the steepest hill algorithm provided a solution with 1023.92 km of traveled distance with 400 moves and 100 trials.  So we can conclude that both of these algorithms find more or less the same solutions. One algorithm take more memory space (the tabu algorithm) while the other seems to take more computing time (the steepest hill algorithm) meaning that the choice of one or the other algorithm depends on the application they are used for.\\
+
+We also notice that the time to find local optimums given the parameters mentioned above usually spanned from 15s to 30s.\\
 
 \end{document}
